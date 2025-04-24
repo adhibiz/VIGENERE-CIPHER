@@ -82,3 +82,4 @@ int main() {
 
 
 ## RESULT
+Thus, the Vigenère cipher technique was successfully implemented using C, and the cipher text was generated correctly based on the given keyword and plaintext.
