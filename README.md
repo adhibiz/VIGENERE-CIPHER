@@ -30,7 +30,55 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
+~~~
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Function to generate the full key to match the length of the plaintext
+void generateKey(char* str, char* key, int len) {
+    int i, j;
+    for (i = 0, j = 0; i < len; i++, j++) {
+        if (j == strlen(key))
+            j = 0;
+        key[i] = key[j];
+    }
+    key[i] = '\0';
+}
+
+// Function to encrypt the plaintext using Vigenere cipher
+void encrypt(char* plaintext, char* key, char* cipher) {
+    for (int i = 0; i < strlen(plaintext); i++) {
+        cipher[i] = ((plaintext[i] - 'A') + (key[i] - 'A')) % 26 + 'A';
+    }
+    cipher[strlen(plaintext)] = '\0';
+}
+
+int main() {
+    char plaintext[100], key[100], fullKey[100], cipher[100];
+
+    printf("Enter the plain text (in uppercase A-Z only): ");
+    scanf("%s", plaintext);
+
+    printf("Enter the key (in uppercase A-Z only): ");
+    scanf("%s", key);
+
+    // Generate repeated key
+    generateKey(plaintext, key, strlen(plaintext));
+    strcpy(fullKey, key);
+
+    // Encrypt
+    encrypt(plaintext, fullKey, cipher);
+
+    printf("Encrypted Text (Cipher Text): %s\n", cipher);
+
+    return 0;
+}
+
+~~~
 
 ## OUTPUT
+![image](https://github.com/user-attachments/assets/04f4ded1-8bfc-43a3-b1a9-db311be47a31)
+
 
 ## RESULT
