@@ -30,55 +30,85 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
-~~~
+```
 #include <stdio.h>
-#include <string.h>
 #include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
-// Function to generate the full key to match the length of the plaintext
-void generateKey(char* str, char* key, int len) {
-    int i, j;
-    for (i = 0, j = 0; i < len; i++, j++) {
-        if (j == strlen(key))
-            j = 0;
-        key[i] = key[j];
-    }
-    key[i] = '\0';
-}
-
-// Function to encrypt the plaintext using Vigenere cipher
-void encrypt(char* plaintext, char* key, char* cipher) {
-    for (int i = 0; i < strlen(plaintext); i++) {
-        cipher[i] = ((plaintext[i] - 'A') + (key[i] - 'A')) % 26 + 'A';
-    }
-    cipher[strlen(plaintext)] = '\0';
-}
+void encipher();
+void decipher();
 
 int main() {
-    char plaintext[100], key[100], fullKey[100], cipher[100];
-
-    printf("Enter the plain text (in uppercase A-Z only): ");
-    scanf("%s", plaintext);
-
-    printf("Enter the key (in uppercase A-Z only): ");
-    scanf("%s", key);
-
-    // Generate repeated key
-    generateKey(plaintext, key, strlen(plaintext));
-    strcpy(fullKey, key);
-
-    // Encrypt
-    encrypt(plaintext, fullKey, cipher);
-
-    printf("Encrypted Text (Cipher Text): %s\n", cipher);
-
-    return 0;
+    int choice;
+    while (1) {
+        printf("\n1. Encrypt Text");
+        printf("\t2. Decrypt Text");
+        printf("\t3. Exit");
+        printf("\n\nEnter Your Choice: ");
+        scanf("%d", &choice);
+        getchar(); // Consume newline character after scanf
+        
+        if (choice == 3)
+            return 0; // Proper exit from main()
+        else if (choice == 1)
+            encipher();
+        else if (choice == 2)
+            decipher();
+        else
+            printf("Please Enter a Valid Option.\n");
+    }
 }
 
-~~~
+void encipher() {
+    unsigned int i, j;
+    char input[50], key[10];
 
+    printf("\n\nEnter Plain Text: ");
+    scanf("%49s", input); // Prevent buffer overflow
+
+    printf("\nEnter Key Value: ");
+    scanf("%9s", key); // Prevent buffer overflow
+
+    printf("\nResultant Cipher Text: ");
+    for (i = 0, j = 0; i < strlen(input); i++, j++) {
+        if (j >= strlen(key)) {
+            j = 0; // Reset key index if it exceeds the key length
+        }
+        printf("%c", 65 + (((toupper(input[i]) - 65) + (toupper(key[j]) - 65)) % 26)); // Encryption formula
+    }
+    printf("\n"); // New line after output
+}
+
+void decipher() {
+    unsigned int i, j;
+    char input[50], key[10];
+    int value;
+
+    printf("\n\nEnter Cipher Text: ");
+    scanf("%49s", input); // Prevent buffer overflow
+
+    printf("\nEnter the Key Value: ");
+    scanf("%9s", key); // Prevent buffer overflow
+
+    printf("\nDecrypted Plain Text: ");
+    for (i = 0, j = 0; i < strlen(input); i++, j++) {
+        if (j >= strlen(key)) {
+            j = 0; // Reset key index if it exceeds the key length
+        }
+        // Decryption formula
+        value = (toupper(input[i]) - 65) - (toupper(key[j]) - 65);
+        if (value < 0) {
+            value += 26; // Correct the negative wrap-around in the alphabet
+        }
+        printf("%c", 65 + (value % 26));
+    }
+    printf("\n"); // New line after output
+}\
+```
 ## OUTPUT
-![image](https://github.com/user-attachments/assets/04f4ded1-8bfc-43a3-b1a9-db311be47a31)
+
+![Screenshot (104)](https://github.com/user-attachments/assets/5dc8f81e-99a0-438d-8bbd-8ec6c0b88bab)
 
 
 ## RESULT
